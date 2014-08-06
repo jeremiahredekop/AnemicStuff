@@ -7,7 +7,7 @@ The idea here is to move towards a crud paradigm, while still supporting our old
 ##More Anemic
 Going crud style
 
-###Save / PUT
+###Save / PUT / PATCH
      /entities/{entityTypeName}/{id}
 Payload = json of attributes & values
 
