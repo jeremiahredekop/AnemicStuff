@@ -1,0 +1,23 @@
+# Standard VS.NET and ReSharper Foo
+*obj
+*bin
+*csx
+*Bin
+_ReSharper*
+*resharper*
+*.suo
+*.cache
+Thumbs.db
+*TestResults
+src/TestResult.xml
+src/SiteDocs.VisualState.xml
+*packages
+*.vs10x
+*Debug
+*.idea
+
+#leftovers from merge
+*.orig
+*.bak
+*.user
+*.log
