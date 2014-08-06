@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace anemicEvents.Entities
 {

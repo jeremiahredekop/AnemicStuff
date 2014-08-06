@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Reflection;
+using System.Web;
 using System.Web.Http;
-using System.Web.Http.Results;
 using anemicEvents.Entities;
-using Newtonsoft.Json;
+using LinqToQuerystring;
 
 namespace anemicEvents.api
 {
@@ -28,13 +26,20 @@ namespace anemicEvents.api
         }
 
         [HttpGet]
-        public IQueryable Get(string entityTypeName)
+        public object Get(string entityTypeName)
         {
             var type = GetType().Assembly.GetTypes().Single(type1 => type1.Name.EndsWith(entityTypeName));
-            return _repo.GetQuery(entityTypeName).OfType(type);
+            return GetInner(type);
+
         }
 
-       
+        private object GetInner(Type entityType)
+        {
+            var query = _repo.GetQuery(entityType.Name).OfType(entityType);
+            var oDataQuery = "?" + HttpUtility.UrlDecode(HttpContext.Current.Request.QueryString.ToString());
+            var modified = query.LinqToQuerystring(entityType, oDataQuery);
+            return modified;
+        }
 
         public IHttpActionResult Put(SaveModel model)
         {

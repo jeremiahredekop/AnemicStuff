@@ -3,7 +3,6 @@ using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
-using System.Web.Http.OData.Extensions;
 
 namespace anemicEvents
 {
@@ -23,7 +22,7 @@ namespace anemicEvents
                 );
 
                 config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
-                config.AddODataQueryFilter();
+                //config.AddODataQueryFilter();
                 GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerActivator), new CustomHttpControllerActivator());
             });         
         }
