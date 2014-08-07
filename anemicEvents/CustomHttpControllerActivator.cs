@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Dispatcher;
+using anemeicEvents.Models;
 using anemicEvents.api;
 
 namespace anemicEvents
@@ -13,11 +14,10 @@ namespace anemicEvents
         {
             if (controllerType == typeof (EntitiesController))
             {
-                return new EntitiesController(EntitiesRepo.WithDummyData());
+                return new EntitiesController(new DbEntitiesRepo(new ReadContext()));
             }
 
             return (IHttpController)Activator.CreateInstance(controllerType);
         }
-     
     }
 }

@@ -1,11 +1,42 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using anemicEvents.Entities;
+using anemeicEvents.Models;
 using gcExtensions;
 
 namespace anemicEvents.api
 {
+    public class DbEntitiesRepo : IEntitiesRepo
+    {
+        private readonly ReadContext _context;
+
+        public DbEntitiesRepo(ReadContext context)
+        {
+            _context = context;
+        }
+
+        public object Get(string entityTypeName, Guid id)
+        {
+            if(entityTypeName != "Equipment")
+                throw new NotImplementedException();
+
+            return _context.Equipment.Single(entity => entity.EquipmentId == id);
+        }
+
+        public IQueryable<object> GetQuery(string entityTypeName)
+        {
+            if (entityTypeName != "Equipment")
+                throw new NotImplementedException();
+            
+            return _context.Equipment.AsQueryable();
+        }
+
+        public void Save(SaveModel save)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class EntitiesRepo : IEntitiesRepo
     {
         private readonly Dictionary<string, List<object>> _data;
@@ -16,7 +47,7 @@ namespace anemicEvents.api
         static EntitiesRepo()
         {
             var data = Enumerable.Range(0, 100)
-       .Select(i => new Entity1() { Id = Guid.NewGuid(), Number = i })
+       .Select(i => new EquipmentEntity() { EquipmentId = Guid.NewGuid(), Name = "Equipment #" + i })
        .GroupBy(entity1 => entity1.GetType().Name);
 
             _instance = new EntitiesRepo(data);   

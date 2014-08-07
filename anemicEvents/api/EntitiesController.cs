@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
-using System.Web;
 using System.Web.Http;
-using anemicEvents.Entities;
-using LinqToQuerystring;
+using anemeicEvents.Models;
 
 namespace anemicEvents.api
 {
-
-
     public class EntitiesController : ApiController
     {
         private readonly IEntitiesRepo _repo;
@@ -26,19 +21,15 @@ namespace anemicEvents.api
         }
 
         [HttpGet]
-        public object Get(string entityTypeName)
+        public IQueryable Get(string entityTypeName)
         {
-            var type = GetType().Assembly.GetTypes().Single(type1 => type1.Name.EndsWith(entityTypeName));
-            return GetInner(type);
-
+            return GetInner(entityTypeName);
         }
 
-        private object GetInner(Type entityType)
+        private IQueryable GetInner(string entityTypeName)
         {
-            var query = _repo.GetQuery(entityType.Name).OfType(entityType);
-            var oDataQuery = "?" + HttpUtility.UrlDecode(HttpContext.Current.Request.QueryString.ToString());
-            var modified = query.LinqToQuerystring(entityType, oDataQuery);
-            return modified;
+            var type = typeof(ReadContext).Assembly.GetTypes().Single(type1 => type1.Name.Contains(entityTypeName));
+            return _repo.GetQuery(entityTypeName).OfType(type);
         }
 
         public IHttpActionResult Put(SaveModel model)
